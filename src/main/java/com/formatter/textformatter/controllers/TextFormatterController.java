@@ -36,6 +36,18 @@ public class TextFormatterController {
         return "index"; // Returns the index.html template
     }
 
+    @PostMapping("/encode-text")
+    public String encodeText(@RequestParam("textInput") String text,
+                             @RequestParam(value = "shift", defaultValue = "1") int shift,
+                             Model model) {
+        String encodedText = textFormatterService.encodeText(text, shift);
+        model.addAttribute("encodedText", encodedText);
+        model.addAttribute("shiftKey", shift);
+
+        return "encodedResult"; // A new template to show encoded text and the key
+    }
+
+
     @GetMapping("/download/{fileIdentifier}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileIdentifier) {
         String filePath = fileMappings.get(fileIdentifier);
@@ -69,6 +81,8 @@ public class TextFormatterController {
                              @RequestParam(value = "fileUpload", required = false) MultipartFile file,
                              @RequestParam(value = "reverse", defaultValue = "false") boolean reverse,
                              @RequestParam(value = "analyzeText", defaultValue = "false") boolean analyze,
+                             @RequestParam(value = "encode", defaultValue = "false") boolean encode,
+                             @RequestParam(value = "shift", defaultValue = "1") int shift,
                              Model model) {
         String formattedText = text;
 
@@ -85,6 +99,10 @@ public class TextFormatterController {
         // Apply text formatting based on selected options
         if (reverse) {
             formattedText = textFormatterService.reverseText(formattedText);
+        }
+
+        if (encode && text != null) {
+            formattedText = textFormatterService.encodeText(text, shift);
         }
 
         // Analyze text if the checkbox is selected

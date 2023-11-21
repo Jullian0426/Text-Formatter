@@ -2,6 +2,7 @@ package com.formatter.textformatter;
 
 import com.formatter.textformatter.services.TextAnalysisResult;
 import com.formatter.textformatter.services.TextFormatterService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,13 +14,18 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @SpringBootTest
 class TextFormatterApplicationTests {
 
-	private final TextFormatterService service = new TextFormatterService();
+	private TextFormatterService textFormatterService;
+
+	@BeforeEach
+	void setUp() {
+		textFormatterService = new TextFormatterService();
+	}
 
 	@Test
 	public void testReverseText() {
 		String originalText = "Hello World";
 		String expectedReversedText = "dlroW olleH";
-		String actualReversedText = service.reverseText(originalText);
+		String actualReversedText = textFormatterService.reverseText(originalText);
 
 		assertEquals(expectedReversedText, actualReversedText);
 	}
@@ -27,7 +33,7 @@ class TextFormatterApplicationTests {
 	@Test
 	public void testAnalyzeText() {
 		String testText = "Hello how are you? hello";
-		TextAnalysisResult result = service.analyzeText(testText);
+		TextAnalysisResult result = textFormatterService.analyzeText(testText);
 
 		// Test the word count
 		assertEquals(5, result.getWordCount(), "Word count should be 5");
@@ -41,5 +47,16 @@ class TextFormatterApplicationTests {
 
 		// Ensure that symbols are removed
 		assertFalse(frequencyMap.containsKey("you?"), "'you?' should not be a key in the frequency map");
+	}
+
+	@Test
+	public void testEncodeText() {
+		String originalText = "abc";
+		int shift = 1;
+		String expectedEncodedText = "bcd";
+
+		String actualEncodedText = textFormatterService.encodeText(originalText, shift);
+
+		assertEquals(expectedEncodedText, actualEncodedText, "The encoded text should be shifted by 1 character");
 	}
 }

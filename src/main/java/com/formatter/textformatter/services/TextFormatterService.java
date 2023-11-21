@@ -28,4 +28,16 @@ public class TextFormatterService {
 
         return new TextAnalysisResult(wordCount, frequencyMap);
     }
+
+    public String encodeText(String input, int shift) {
+        StringBuilder encoded = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            if (Character.isLetter(c)) {
+                char base = Character.isLowerCase(c) ? 'a' : 'A';
+                c = (char) ((c - base + shift) % 26 + base);
+            }
+            encoded.append(c);
+        }
+        return encoded.toString();
+    }
 }
