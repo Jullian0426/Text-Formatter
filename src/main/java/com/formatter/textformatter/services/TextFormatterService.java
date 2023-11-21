@@ -17,7 +17,7 @@ public class TextFormatterService {
         Map<String, Integer> frequencyMap = new HashMap<>();
 
         // Remove non-alphabetic characters (except spaces) and split by spaces
-        String[] words = text.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+        String[] words = text.replaceAll("[\r\n]+", " ").replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
 
         int wordCount = words.length;
         for (String word : words) {
