@@ -50,24 +50,26 @@ class TextFormatterApplicationTests {
 	}
 
 	@Test
-	public void testEncodeText() {
+	void testCaesarCipherEncode() {
 		String originalText = "abc";
-		int shift = 1;
-		String expectedEncodedText = "bcd";
+		int shift = 3;
+		boolean isEncoding = true;
+		String expectedEncodedText = "def"; // 'abc' shifted by 3
 
-		String actualEncodedText = textFormatterService.encodeText(originalText, shift);
+		String actualEncodedText = textFormatterService.caesarCipher(originalText, shift, isEncoding);
 
-		assertEquals(expectedEncodedText, actualEncodedText, "The encoded text should be shifted by 1 character");
+		assertEquals(expectedEncodedText, actualEncodedText, "The encoded text should shift each character by 3");
 	}
 
 	@Test
-	void testDecodeText() {
-		String encodedText = "bcd";
-		int shift = 1;
-		String expectedDecodedText = "abc";
+	void testCaesarCipherDecode() {
+		String encodedText = "def";
+		int shift = 3;
+		boolean isEncoding = false;
+		String expectedDecodedText = "abc"; // 'def' reversed by shift of 3
 
-		String actualDecodedText = textFormatterService.decodeText(encodedText, shift);
+		String actualDecodedText = textFormatterService.caesarCipher(encodedText, shift, isEncoding);
 
-		assertEquals(expectedDecodedText, actualDecodedText, "The decoded text should reverse the shift of 1 character");
+		assertEquals(expectedDecodedText, actualDecodedText, "The decoded text should reverse the shift of 3");
 	}
 }

@@ -15,6 +15,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Logic for the cipher form
+    document.getElementById('cipherFileUpload').addEventListener('change', function() {
+        if (this.files.length > 0) {
+            document.getElementById('cipherTextInput').disabled = true;
+        } else {
+            document.getElementById('cipherTextInput').disabled = false;
+        }
+    });
+
+    document.getElementById('removeCipherFileBtn').addEventListener('click', function () {
+        document.getElementById('cipherFileUpload').value = "";
+        document.getElementById('cipherTextInput').disabled = false;
+    });
+
     // Handle submit
     document.getElementById("textFormatterForm").onsubmit = function() {
         var textInput = document.getElementById("textInput").value;

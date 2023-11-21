@@ -19,15 +19,6 @@
                 <button type="button" id="removeFileBtn" class="btn btn-warning btn-sm mt-2">Remove</button>
             </div>
 
-            <div class="form-group">
-                <label><input type="checkbox" name="encode" value="true"> Encode Text</label>
-            </div>
-
-            <div class="form-group">
-                <label for="shift">Shift for Encoding:</label>
-                <input type="number" id="shift" name="shift" value="1" min="1" max="25" class="form-control">
-            </div>
-
             <div class="checkbox mb-3">
                 <label><input type="checkbox" name="reverse" value="true"> Reverse Text</label>
             </div>
@@ -39,18 +30,33 @@
         </form>
 
         <br><br>
-        <form action="/decode" method="post">
+        <h3 class="text-center">Ceasar Cipher</h3>
+
+        <form id="cipherForm" action="/process-text" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="encodedTextInput">Encoded Text:</label>
-                <textarea id="encodedTextInput" name="encodedText" rows="4" class="form-control"></textarea>
+                <label for="textInput">Text:</label>
+                <textarea id="cipherTextInput" name="textInput" rows="4" class="form-control" placeholder="Enter text here..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="cipherFileUpload">Or upload a text file:</label>
+                <input type="file" id="cipherFileUpload" name="fileUpload" class="form-control-file">
+                <button type="button" id="removeCipherFileBtn" class="btn btn-warning btn-sm mt-2">Remove</button>
             </div>
 
             <div class="form-group">
                 <label for="shiftInput">Shift:</label>
-                <input type="number" id="shiftInput" name="shift" value="1" min="1" max="25" class="form-control">
+                <input type="number" id="shiftInput" name="shift" value="1" min="1" max="25" class="form-control" style="width: 80px" onkeydown="return false;">
             </div>
 
-            <button type="submit" class="btn btn-primary">Decode Text</button>
+            <div class="form-group">
+                <label><input type="radio" name="processType" value="encode" checked> Encode</label>
+                <label><input type="radio" name="processType" value="decode"> Decode</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
     </div>
     <script src="/form-handler.js"></script>
 </body>

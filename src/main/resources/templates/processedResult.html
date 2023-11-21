@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Processed Text Result</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center">Processed Text</h1>
+    <p th:text="${processedText}">Processed text will appear here.</p>
+
+    <a th:href="@{/download/{fileIdentifier}(fileIdentifier=${fileIdentifier})}" class="btn btn-info mt-3" download>Download Processed Text</a>
+
+    <a href="/" class="btn btn-secondary mt-3">Process another text</a>
+</div>
+
+</body>
+</html>

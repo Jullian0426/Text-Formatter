@@ -36,32 +36,35 @@ public class TextFormatterController {
         return "index"; // Returns the index.html template
     }
 
-    @PostMapping("/encode-text")
-    public String encodeText(@RequestParam("textInput") String text,
-                             @RequestParam(value = "shift", defaultValue = "1") int shift,
-                             Model model) {
-        String encodedText = textFormatterService.encodeText(text, shift);
-        model.addAttribute("encodedText", encodedText);
-        model.addAttribute("shiftKey", shift);
+    @PostMapping("/process-text")
+    public String processText(@RequestParam(value = "textInput", required = false) String text,
+                              @RequestParam(value = "fileUpload", required = false) MultipartFile file,
+                              @RequestParam(value = "shift") int shift,
+                              @RequestParam(value = "processType") String processType,
+                              Model model) {
+        boolean isEncoding = processType.equals("encode");
+        String processedText = text;
 
-        return "encodedResult"; // A new template to show encoded text and the key
-    }
+        if (file != null && !file.isEmpty()) {
+            try {
+                processedText = new String(file.getBytes(), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                model.addAttribute("error", "Error processing file: " + e.getMessage());
+                return "result"; // Redirect to a result page showing the error
+            }
+        }
 
-    @PostMapping("/decode")
-    public String decodeText(@RequestParam("encodedText") String encodedText,
-                             @RequestParam("shift") int shift,
-                             Model model) {
-        String decodedText = textFormatterService.decodeText(encodedText, shift);
+        processedText = textFormatterService.caesarCipher(processedText, shift, isEncoding);
 
         final int PREVIEW_LENGTH = 500;
-        String previewText = decodedText.length() > PREVIEW_LENGTH
-                ? decodedText.substring(0, PREVIEW_LENGTH) + "..."
-                : decodedText;
+        String previewText = processedText.length() > PREVIEW_LENGTH
+                ? processedText.substring(0, PREVIEW_LENGTH) + "..."
+                : processedText;
 
         try {
-            String filename = "decoded_text" + UUID.randomUUID().toString() + ".txt";
+            String filename = "processed_text" + UUID.randomUUID().toString() + ".txt";
             Path path = Paths.get(FILE_DIRECTORY, filename);
-            Files.write(path, decodedText.getBytes());
+            Files.write(path, processedText.getBytes());
 
             String fileIdentifier = UUID.randomUUID().toString();
             fileMappings.put(fileIdentifier, path.toString());
@@ -71,10 +74,11 @@ public class TextFormatterController {
             model.addAttribute("error", "Error creating file: " + e.getMessage());
         }
 
-        model.addAttribute("decodedText", decodedText);
+        model.addAttribute("processedText", processedText);
         model.addAttribute("previewText", previewText);
-        return "decodedResult"; // A new template to show decoded text
+        return "processedResult";
     }
+
 
     @GetMapping("/download/{fileIdentifier}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileIdentifier) {
@@ -109,8 +113,6 @@ public class TextFormatterController {
                              @RequestParam(value = "fileUpload", required = false) MultipartFile file,
                              @RequestParam(value = "reverse", defaultValue = "false") boolean reverse,
                              @RequestParam(value = "analyzeText", defaultValue = "false") boolean analyze,
-                             @RequestParam(value = "encode", defaultValue = "false") boolean encode,
-                             @RequestParam(value = "shift", defaultValue = "1") int shift,
                              Model model) {
         String formattedText = text;
 
@@ -127,10 +129,6 @@ public class TextFormatterController {
         // Apply text formatting based on selected options
         if (reverse) {
             formattedText = textFormatterService.reverseText(formattedText);
-        }
-
-        if (encode && text != null) {
-            formattedText = textFormatterService.encodeText(text, shift);
         }
 
         // Analyze text if the checkbox is selected

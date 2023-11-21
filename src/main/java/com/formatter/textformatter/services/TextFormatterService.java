@@ -29,19 +29,22 @@ public class TextFormatterService {
         return new TextAnalysisResult(wordCount, frequencyMap);
     }
 
-    public String encodeText(String input, int shift) {
-        StringBuilder encoded = new StringBuilder();
-        for (char c : input.toCharArray()) {
-            if (Character.isLetter(c)) {
-                char base = Character.isLowerCase(c) ? 'a' : 'A';
-                c = (char) ((c - base + shift) % 26 + base);
-            }
-            encoded.append(c);
+    public String caesarCipher(String text, int shift, boolean isEncoding) {
+        shift = shift % 26; // Ensure the shift stays within the range of the alphabet
+        if (!isEncoding) {
+            shift = 26 - shift; // Reverse the shift for decoding
         }
-        return encoded.toString();
-    }
 
-    public String decodeText(String encodedText, int shift) {
-        return encodeText(encodedText, 26 - shift); // For a simple Caesar cipher
+        StringBuilder result = new StringBuilder();
+        for (char character : text.toCharArray()) {
+            if (Character.isLetter(character)) {
+                char base = Character.isLowerCase(character) ? 'a' : 'A';
+                int newChar = (character - base + shift) % 26 + base;
+                result.append((char) newChar);
+            } else {
+                result.append(character); // Non-letter characters are unchanged
+            }
+        }
+        return result.toString();
     }
 }
