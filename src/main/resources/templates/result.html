@@ -2,16 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Formatted Text Result</title>
-    <!-- Add any CSS references here -->
 </head>
 <body>
 
 <h1>Formatted Text</h1>
-
-<!-- Displaying the formatted text -->
 <p th:text="${formattedText}">Formatted text will appear here.</p>
 
-<!-- Link to go back to the home page -->
+<!-- Display text analysis results if available -->
+<div th:if="${analysisResult != null}">
+    <h2>Text Analysis Result</h2>
+    <p>Word Count: <span th:text="${analysisResult.wordCount}"></span></p>
+    <h3>Word Frequency:</h3>
+    <ul>
+        <li th:each="entry : ${analysisResult.wordFrequency}">
+            <span th:text="${entry.key}"></span>: <span th:text="${entry.value}"></span>
+        </li>
+    </ul>
+</div>
+
 <a href="/">Try another formatting</a>
 
 </body>

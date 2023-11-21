@@ -3,30 +3,42 @@
 <head>
     <title>Text Formatter</title>
     <!-- Add any CSS references here -->
+    <script type="text/javascript">
+        function handleSubmit() {
+            var textInput = document.getElementById("textInput").value;
+            var fileInput = document.getElementById("fileUpload").files.length;
+
+            // Set the action to the combined endpoint
+            document.getElementById("textFormatterForm").action = "/format";
+
+            // Check if either text input is provided or a file is selected
+            if (textInput.trim() === "" && fileInput === 0) {
+                alert("Please enter text or select a file.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </head>
 <body>
 
 <h1>Welcome to the Text Formatter</h1>
 
-<!-- Add this inside the <body> tag -->
-
-<form th:action="@{/format-text}" method="post">
-    <label><textarea name="textInput" rows="10" cols="50" placeholder="Enter text here..."></textarea></label>
-    <br>
-
+<form id="textFormatterForm" onsubmit="return handleSubmit()" method="post" enctype="multipart/form-data">
+    <label><textarea id="textInput" name="textInput" rows="10" cols="50" placeholder="Enter text here..."></textarea></label>
     <br><br>
+
     <label for="fileUpload">Upload a text file:</label>
     <input type="file" id="fileUpload" name="fileUpload">
 
     <br><br>
-    <label><input type="radio" name="action" value="reverse" checked> Reverse Text</label>
-    <label><input type="radio" name="action" value="sort"> Sort Text</label>
+    <label><input type="checkbox" name="reverse" value="true"> Reverse Text</label>
+    <label><input type="checkbox" name="analyzeText" value="true"> Analyze Text</label>
 
     <br><br>
-    <button type="submit">Format Text</button>
-    <!-- Add more options as needed -->
+    <button type="submit">Submit</button>
 </form>
-
 
 </body>
 </html>
