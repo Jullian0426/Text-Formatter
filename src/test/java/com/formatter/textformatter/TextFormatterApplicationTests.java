@@ -59,4 +59,15 @@ class TextFormatterApplicationTests {
 
 		assertEquals(expectedEncodedText, actualEncodedText, "The encoded text should be shifted by 1 character");
 	}
+
+	@Test
+	void testDecodeText() {
+		String encodedText = "bcd";
+		int shift = 1;
+		String expectedDecodedText = "abc";
+
+		String actualDecodedText = textFormatterService.decodeText(encodedText, shift);
+
+		assertEquals(expectedDecodedText, actualDecodedText, "The decoded text should reverse the shift of 1 character");
+	}
 }

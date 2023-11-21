@@ -47,6 +47,34 @@ public class TextFormatterController {
         return "encodedResult"; // A new template to show encoded text and the key
     }
 
+    @PostMapping("/decode")
+    public String decodeText(@RequestParam("encodedText") String encodedText,
+                             @RequestParam("shift") int shift,
+                             Model model) {
+        String decodedText = textFormatterService.decodeText(encodedText, shift);
+
+        final int PREVIEW_LENGTH = 500;
+        String previewText = decodedText.length() > PREVIEW_LENGTH
+                ? decodedText.substring(0, PREVIEW_LENGTH) + "..."
+                : decodedText;
+
+        try {
+            String filename = "decoded_text" + UUID.randomUUID().toString() + ".txt";
+            Path path = Paths.get(FILE_DIRECTORY, filename);
+            Files.write(path, decodedText.getBytes());
+
+            String fileIdentifier = UUID.randomUUID().toString();
+            fileMappings.put(fileIdentifier, path.toString());
+
+            model.addAttribute("fileIdentifier", fileIdentifier);
+        } catch (IOException e) {
+            model.addAttribute("error", "Error creating file: " + e.getMessage());
+        }
+
+        model.addAttribute("decodedText", decodedText);
+        model.addAttribute("previewText", previewText);
+        return "decodedResult"; // A new template to show decoded text
+    }
 
     @GetMapping("/download/{fileIdentifier}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileIdentifier) {

@@ -37,6 +37,20 @@
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
+        <br><br>
+        <form action="/decode" method="post">
+            <div class="form-group">
+                <label for="encodedTextInput">Encoded Text:</label>
+                <textarea id="encodedTextInput" name="encodedText" rows="4" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="shiftInput">Shift:</label>
+                <input type="number" id="shiftInput" name="shift" value="1" min="1" max="25" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Decode Text</button>
     </div>
     <script src="/form-handler.js"></script>
 </body>

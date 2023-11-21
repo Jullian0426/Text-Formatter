@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Decoded Text Result</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Decoded Text</h1>
+
+        <!-- Decoded text preview -->
+        <p th:text="${previewText}">Decoded text will appear here.</p>
+
+        <!-- Download button -->
+        <a th:href="@{/download/{fileIdentifier}(fileIdentifier=${fileIdentifier})}" class="btn btn-info mt-3" download>Download Decoded Text</a>
+
+        <a href="/" class="btn btn-secondary mt-3">Decode another text</a>
+    </div>
+
+</body>
+</html>

@@ -40,4 +40,8 @@ public class TextFormatterService {
         }
         return encoded.toString();
     }
+
+    public String decodeText(String encodedText, int shift) {
+        return encodeText(encodedText, 26 - shift); // For a simple Caesar cipher
+    }
 }
