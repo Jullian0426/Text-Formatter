@@ -107,7 +107,13 @@ public class TextFormatterController {
             model.addAttribute("error", "Error creating file: " + e.getMessage());
         }
 
+        final int PREVIEW_LENGTH = 500; // Define a max length for the preview
+        String previewText = formattedText.length() > PREVIEW_LENGTH
+                ? formattedText.substring(0, PREVIEW_LENGTH) + "..."
+                : formattedText;
+
         model.addAttribute("formattedText", formattedText);
+        model.addAttribute("previewText", previewText);
         return "result";
     }
 }
