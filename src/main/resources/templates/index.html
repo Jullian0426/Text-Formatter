@@ -2,43 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Text Formatter</title>
-    <!-- Add any CSS references here -->
-    <script type="text/javascript">
-        function handleSubmit() {
-            var textInput = document.getElementById("textInput").value;
-            var fileInput = document.getElementById("fileUpload").files.length;
-
-            // Set the action to the combined endpoint
-            document.getElementById("textFormatterForm").action = "/format";
-
-            // Check if either text input is provided or a file is selected
-            if (textInput.trim() === "" && fileInput === 0) {
-                alert("Please enter text or select a file.");
-                return false;
-            }
-
-            return true;
-        }
-    </script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <div class="container mt-5">
+        <h1 class="text-center">Welcome to the Text Formatter</h1>
 
-<h1>Welcome to the Text Formatter</h1>
+        <form id="textFormatterForm" onsubmit="return handleSubmit()" method="post" action="/format" enctype="multipart/form-data" class="mt-4">
+            <div class="form-group">
+                <textarea id="textInput" name="textInput" rows="10" class="form-control" placeholder="Enter text here..."></textarea>
+            </div>
 
-<form id="textFormatterForm" onsubmit="return handleSubmit()" method="post" enctype="multipart/form-data">
-    <label><textarea id="textInput" name="textInput" rows="10" cols="50" placeholder="Enter text here..."></textarea></label>
-    <br><br>
+            <div class="form-group">
+                <label for="fileUpload">Upload a text file:</label>
+                <input type="file" id="fileUpload" name="fileUpload" class="form-control-file">
+                <button type="button" id="removeFileBtn" class="btn btn-warning btn-sm mt-2">Remove</button>
+            </div>
 
-    <label for="fileUpload">Upload a text file:</label>
-    <input type="file" id="fileUpload" name="fileUpload">
+            <div class="checkbox mb-3">
+                <label><input type="checkbox" name="reverse" value="true"> Reverse Text</label>
+            </div>
+            <div class="checkbox mb-3">
+                <label><input type="checkbox" name="analyzeText" value="true"> Analyze Text</label>
+            </div>
 
-    <br><br>
-    <label><input type="checkbox" name="reverse" value="true"> Reverse Text</label>
-    <label><input type="checkbox" name="analyzeText" value="true"> Analyze Text</label>
-
-    <br><br>
-    <button type="submit">Submit</button>
-</form>
-
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="/form-handler.js"></script>
 </body>
+
 </html>
